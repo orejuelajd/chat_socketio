@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Chat implementado por Juan D. Orejuela B.</title>
+    <style>
+        .capaMensajes {
+            width: 70%;
+            height: 500px;
+            border: 2px solid;
+            padding: 10px;
+            margin: 0;
+        }
+        ul { padding: 8px; list-style-type: none; }
+        input { height: 32px; width: 50%; }
+        button { height: 32px; width: 20%; }
+    </style>
+</head>
+<body>
+    <div class="capaMensajes">
+        <ul id="mensajesLista"></ul>
+    </div>
+    <div>
+        <div>
+            <span><input type="text" id="mensajeParaEnviar" placeholder="Escribe tu mensaje" /></span>
+            <span><button onclick="enviarMensaje()">Enviar</button></span>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        // el mensaje que nos llega desde el servidor
+        socket.on("mensaje", function(mensaje) {
+            document.getElementById("mensajesLista").innerHTML += "<li>" + mensaje + "</li>";
+        });
+        function enviarMensaje() {
+            console.log("enviando: " + document.getElementById("mensajeParaEnviar").value);
+            socket.emit('mensaje', document.getElementById("mensajeParaEnviar").value);
+            document.getElementById("mensajeParaEnviar").value = "";
+        }
+
+
+    </script>
+</body>
+</html>
